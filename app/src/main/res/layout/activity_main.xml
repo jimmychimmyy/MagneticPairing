@@ -37,4 +37,11 @@
         android:background="@color/green"
         android:visibility="invisible"/>
 
+    <Switch
+        android:id="@+id/pairStartSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pair  "
+        android:layout_centerInParent="true"/>
+
 </RelativeLayout>

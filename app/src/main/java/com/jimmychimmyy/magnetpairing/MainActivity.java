@@ -7,17 +7,14 @@ import android.hardware.SensorManager;
 import android.opengl.Matrix;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Timer;
@@ -32,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private TextView magZTextView;
 
     private ImageView mainAlertView;
+
+    private Switch startPairingSwitch;
 
     private Sensor mAccelerometer;
     private Sensor mGeomagnetic;
@@ -69,8 +68,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         mainAlertView = (ImageView) findViewById(R.id.mainAlertView);
 
-        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
-        mSensorManager.registerListener(this, mGeomagnetic, SensorManager.SENSOR_DELAY_FASTEST);
+        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mGeomagnetic, SensorManager.SENSOR_DELAY_NORMAL);
 
         final Handler handler = new Handler();
         Timer timer = new Timer();
@@ -80,8 +79,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        String data = magXTextView.getText() + "&" + magYTextView.getText() + "&" + magZTextView.getText();
-                        System.out.println(data);
+                        String data = magXTextView.getText()
+                                + "&" + magYTextView.getText()
+                                + "&" + magZTextView.getText()
+                                + "&usr=";
+                        //System.out.println(data);
                         //System.out.println("posting");
                         //new HttpPost().execute(data);
                     }
@@ -89,6 +91,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         };
         timer.schedule(task, 0, 100);
+
+        startPairingSwitch = (Switch) findViewById(R.id.pairStartSwitch);
+        startPairingSwitch.setChecked(false);
+        startPairingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if(checked) {
+                    System.out.print("on");
+                } else {
+                    System.out.print("off");
+                }
+            }
+        });
     }
 
     @Override
